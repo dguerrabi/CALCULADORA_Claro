@@ -425,7 +425,7 @@
       <small>POWER</small>
     </div>
   </div>
-  <div class="t2p-tag">Simulador de ARPU</div>
+  <div class="t2p-tag">Simulador de INGRESOS</div>
 </header>
 
 <div class="arpu-container">
@@ -454,10 +454,7 @@
   </div>
 
   <!-- ARPU -->
-  <div class="section">
-    <h2>ARPU consolidado</h2>
-    <div class="main-arpu" id="arpu-consolidado">$0</div>
-  </div>
+  
 
   <!-- RESULTADO -->
   <div class="section">
@@ -503,6 +500,8 @@
     </div>
   </div>
 
+
+
   <!-- SIMULACIÓN INVERSA -->
   <div class="section">
     <h2>Unidades necesarias por agente</h2>
@@ -512,7 +511,10 @@
       <div class="card"><div class="card-title">Mix Terminales</div><div class="card-value" id="mix-t">70%</div><p>del total</p></div>
     </div>
   </div>
-
+    <div class="section">
+    <h2>ARPU consolidado</h2>
+    <div class="main-arpu" id="arpu-consolidado">$0</div>
+  </div>
   <!-- CONVERSIÓN -->
   <div class="section">
     <h2>Conversión de porcentajes a unidades</h2>
@@ -558,6 +560,7 @@
       <div class="card"><div class="card-title">Venta proyectada</div><div class="card-value" id="e-venta">$0</div></div>
       <div class="card"><div class="card-title">Comisión</div><div class="card-value" id="e-comision">$0</div></div>
       <div class="card"><div class="card-title">Incentivo</div><div class="card-value" id="e-incentivo">$0</div></div>
+  
       <div class="card hero"><div class="card-title">Pago total</div><div class="card-value" id="e-total">$0</div></div>
     </div>
 
@@ -712,8 +715,8 @@ function actualizar() {
   document.getElementById("arpu-consolidado").textContent = fmtMoney(arpuCons);
 
   document.getElementById("u-totales").textContent = unidadesTotales.toLocaleString("es-CO");
-  document.getElementById("u-term").textContent    = fmtNum(unidadesTerm);
-  document.getElementById("u-tech").textContent    = fmtNum(unidadesTech);
+  document.getElementById("u-term").textContent    = unidadesTerm.toLocaleString("es-CO");
+  document.getElementById("u-tech").textContent    = unidadesTech.toLocaleString("es-CO");
 
   document.getElementById("v-proy").textContent = fmtMoney(ventaProy);
   document.getElementById("v-term").textContent = fmtMoney(ventaTerm);
