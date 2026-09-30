@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador ARPU & Ganancias | Tools2Power</title>
+<title>Simulador ARPU &amp; Ganancias | Tools2Power</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -21,10 +21,8 @@
     --surface-2: #F7F7F7;
 
     --good-bg: #E8F5E9;
-    --good-line: #A5D6A7;
     --good-ink: #1B5E20;
     --bad-bg: #FDECEA;
-    --bad-line: #F5C6CB;
     --bad-ink: #B71C1C;
 
     --font-display: 'Gelion', 'Lato', 'Arial Black', sans-serif;
@@ -41,7 +39,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ============ HEADER CON MARCA ============ */
+  /* HEADER */
   .t2p-header {
     background: var(--t2p-black);
     color: white;
@@ -61,12 +59,7 @@
     background: var(--t2p-red);
     opacity: .12;
   }
-  .t2p-logo {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 2;
-  }
+  .t2p-logo { display: flex; align-items: center; gap: 16px; z-index: 2; }
   .t2p-isotipo {
     display: grid;
     grid-template-columns: repeat(2, 16px);
@@ -106,13 +99,10 @@
     z-index: 2;
   }
 
-  /* ============ CONTENEDOR ============ */
+  /* CONTENEDOR */
   .arpu-container {
-    font-family: var(--font-body);
     max-width: 1250px;
     margin: 25px auto;
-    color: var(--ink);
-    background: var(--t2p-bg);
     padding: 20px;
     position: relative;
   }
@@ -137,14 +127,9 @@
     color: var(--ink);
   }
   .arpu-title span { color: var(--t2p-red); }
+  .subtitle { color: var(--ink-soft); margin-bottom: 25px; font-size: 14.5px; }
 
-  .subtitle {
-    color: var(--ink-soft);
-    margin-bottom: 25px;
-    font-size: 14.5px;
-  }
-
-  /* ============ INPUTS ============ */
+  /* INPUTS */
   .inputs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -189,7 +174,7 @@
     text-align: right;
   }
 
-  /* ============ SLIDERS MIX ============ */
+  /* MIX GRID */
   .mix-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -219,15 +204,8 @@
     margin-bottom: 8px;
     font-size: 12px;
   }
-  .mix-row label {
-    flex: 1;
-    color: var(--ink-soft);
-    font-weight: 600;
-  }
-  .mix-row input[type=range] {
-    flex: 1.2;
-    accent-color: var(--t2p-red);
-  }
+  .mix-row label { flex: 1; color: var(--ink-soft); font-weight: 600; }
+  .mix-row input[type=range] { flex: 1.2; accent-color: var(--t2p-red); }
   .mix-row .mix-val {
     width: 42px;
     text-align: right;
@@ -246,7 +224,7 @@
   .mix-total.ok { color: #1B5E20; }
   .mix-total.no { color: #B71C1C; }
 
-  /* ============ SECCIONES ============ */
+  /* SECTIONS */
   .section {
     background: var(--surface);
     border: 1px solid var(--line);
@@ -266,7 +244,6 @@
     opacity: .3;
     pointer-events: none;
   }
-
   .section h2 {
     font-family: var(--font-display);
     font-size: 18px;
@@ -288,7 +265,7 @@
     flex-shrink: 0;
   }
 
-  /* ============ CARDS ============ */
+  /* CARDS */
   .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -300,7 +277,6 @@
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 18px;
-    text-align: left;
     position: relative;
     overflow: hidden;
   }
@@ -334,9 +310,7 @@
   }
   .card.hero .card-title { color: #cfd4d8; }
   .card.hero .card-value { color: var(--t2p-red); }
-  .card.hero::before { background: var(--t2p-red); }
 
-  /* ============ ARPU DESTACADO ============ */
   .main-arpu {
     font-family: var(--font-display);
     font-size: 46px;
@@ -352,27 +326,26 @@
   }
   .mix strong { color: var(--ink); }
 
-  /* ============ TABLAS ============ */
+  /* TABLAS */
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    font-size: 12.5px;
+    font-size: 12px;
   }
   th, td {
-    padding: 9px 8px;
+    padding: 8px 6px;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
     text-align: right;
     font-variant-numeric: tabular-nums;
   }
   th {
-    text-align: right;
     background: var(--t2p-black);
     color: white;
     font-size: 10.5px;
     text-transform: uppercase;
-    letter-spacing: .4px;
+    letter-spacing: .3px;
     font-weight: 700;
   }
   th:first-child, td:first-child {
@@ -398,7 +371,7 @@
     display: inline-block;
   }
 
-  /* ============ ESTADOS ============ */
+  /* ESTADOS */
   .estado {
     padding: 14px 18px;
     border-radius: 10px;
@@ -412,14 +385,10 @@
   .estado.ok { border-left-color: #2E7D32; color: #1B5E20; background: #E8F5E9; }
   .estado.no { border-left-color: var(--t2p-red); color: #B71C1C; background: #FDECEA; }
 
-  .estado-grid {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-  }
+  .estado-grid { display: flex; gap: 15px; margin-bottom: 20px; }
   .estado-grid .estado { flex: 1; margin-bottom: 0; }
 
-  /* ============ RESULTADO ECONÓMICO ============ */
+  /* ECONOMIC */
   .eco-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -457,7 +426,7 @@
   .eco-card.good small { color: #1B5E20; }
   .eco-card.good b { color: #1B5E20; }
 
-  /* ============ ALERTA ============ */
+  /* ALERTA */
   .alerta {
     background: #FFF3CD;
     border: 1px solid #FFE69C;
@@ -470,7 +439,7 @@
   .alerta ul { margin: 8px 0 0 0; padding-left: 20px; }
   .alerta b { font-weight: 700; }
 
-  /* ============ FOOTER ============ */
+  /* FOOTER */
   .t2p-footer {
     text-align: center;
     padding: 30px 20px 40px;
@@ -509,7 +478,6 @@
 </head>
 <body>
 
-<!-- HEADER DE MARCA -->
 <header class="t2p-header">
   <div class="t2p-logo">
     <div class="t2p-isotipo"><span></span><span></span><span></span></div>
@@ -518,7 +486,7 @@
       <small>POWER</small>
     </div>
   </div>
-  <div class="t2p-tag">Simulador de ARPU &amp; Ganancias</div>
+  <div class="t2p-tag">Simulador ARPU &amp; Ganancias</div>
 </header>
 
 <div class="arpu-container">
@@ -526,7 +494,9 @@
   <div class="arpu-title">Simulador <span>ARPU</span> &amp; Ganancias</div>
   <div class="subtitle">Terminales + Tecnología</div>
 
-  <!-- ENTRADAS -->
+  <div id="alerta"></div>
+
+  <!-- SUPUESTOS -->
   <div class="section">
     <h2>Supuestos de operación</h2>
     <div class="inputs">
@@ -552,13 +522,11 @@
       </div>
     </div>
     <div class="input-card" style="margin-top:10px;">
-      <div class="input-title">Gasto por agente (costo operativo mensual)</div>
+      <div class="input-title">Gasto por agente</div>
       <input type="range" id="gasto" min="0" max="10000000" step="100000" value="4000000">
       <div class="input-value" id="gasto-val">$4.000.000</div>
     </div>
-    <div class="mix">
-      Mix de negocio: <strong>Terminales 70%</strong> &nbsp;|&nbsp; <strong>Tecnología 30%</strong>
-    </div>
+    <div class="mix">Mix de negocio: <strong>Terminales 70%</strong> &nbsp;|&nbsp; <strong>Tecnología 30%</strong></div>
   </div>
 
   <!-- DISTRIBUCIÓN -->
@@ -593,7 +561,6 @@
       <div class="card"><div class="card-title">Tecnología</div><div class="card-value" id="u-tech">0</div></div>
       <div class="card hero"><div class="card-title">Venta proyectada</div><div class="card-value" id="v-proy">$0</div></div>
     </div>
-
     <h2>Cumplimiento de metas</h2>
     <div class="cards">
       <div class="card"><div class="card-title">Meta Terminales</div><div class="card-value" id="c-term">0%</div></div>
@@ -603,7 +570,7 @@
     </div>
   </div>
 
-  <!-- SIMULACIÓN INVERSA -->
+  <!-- INVERSA -->
   <div class="section">
     <h2>Unidades necesarias por agente</h2>
     <div class="cards">
@@ -611,6 +578,15 @@
       <div class="card"><div class="card-title">Unidades necesarias totales</div><div class="card-value" id="u-meta-tot">0</div><p>unidades</p></div>
       <div class="card"><div class="card-title">Gap vs. proyectado</div><div class="card-value" id="u-gap">0</div><p>unidades</p></div>
       <div class="card"><div class="card-title">Venta adicional requerida</div><div class="card-value" id="v-gap">$0</div><p>para cumplir meta</p></div>
+    </div>
+  </div>
+
+  <!-- ESTADOS -->
+  <div class="section">
+    <h2>Estado del esquema</h2>
+    <div class="estado-grid">
+      <div class="estado no" id="estado-comision">COMISIÓN NO APLICA</div>
+      <div class="estado no" id="estado-incentivo">INCENTIVO NO APLICA</div>
     </div>
   </div>
 
@@ -688,11 +664,6 @@
       <div class="card"><div class="card-title">Comisión</div><div class="card-value" id="e-comision">$0</div></div>
       <div class="card"><div class="card-title">Incentivo</div><div class="card-value" id="e-incentivo">$0</div></div>
       <div class="card hero"><div class="card-title">Ganancias</div><div class="card-value" id="e-total">$0</div></div>
-    </div>
-
-    <div class="estado-grid">
-      <div class="estado no" id="estado-comision">COMISIÓN NO APLICA</div>
-      <div class="estado no" id="estado-incentivo">INCENTIVO NO APLICA</div>
     </div>
 
     <h3 class="t2p-sub">Detalle de comisión e incentivo</h3>
@@ -776,7 +747,7 @@ function comisionTecnologia(precio) {
 }
 
 // ============================================================
-// CONSTRUIR SLIDERS DE MIX
+// SLIDERS
 // ============================================================
 const slidersTerm = [];
 const slidersTech = [];
@@ -806,7 +777,7 @@ buildSlider("sliders-term", RANGOS_TERMINALES, VALORES_TERMINALES_DEFAULT, slide
 buildSlider("sliders-tech", RANGOS_TECNOLOGIA, VALORES_TECNOLOGIA_DEFAULT, slidersTech);
 
 // ============================================================
-// RENDER PRINCIPAL
+// RENDER
 // ============================================================
 function actualizar() {
   const agentes   = +document.getElementById("agentes").value;
@@ -825,11 +796,32 @@ function actualizar() {
   const totalTerm = valoresTerm.reduce((a,b)=>a+b,0);
   const totalTech = valoresTech.reduce((a,b)=>a+b,0);
 
-  document.getElementById("total-term").textContent = "Total: " + totalTerm + "%";
-  document.getElementById("total-term").className = "mix-total " + (totalTerm === 100 ? "ok" : "no");
-  document.getElementById("total-tech").textContent = "Total: " + totalTech + "%";
-  document.getElementById("total-tech").className = "mix-total " + (totalTech === 100 ? "ok" : "no");
+  const totalTermEl = document.getElementById("total-term");
+  totalTermEl.textContent = "Total: " + totalTerm + "%";
+  totalTermEl.className = "mix-total " + (totalTerm === 100 ? "ok" : "no");
 
+  const totalTechEl = document.getElementById("total-tech");
+  totalTechEl.textContent = "Total: " + totalTech + "%";
+  totalTechEl.className = "mix-total " + (totalTech === 100 ? "ok" : "no");
+
+  // Validación
+  const alertaEl = document.getElementById("alerta");
+  if (totalTerm !== 100 || totalTech !== 100) {
+    const errores = [];
+    if (totalTerm !== 100) errores.push(`La distribución de Terminales suma ${totalTerm}% y debe sumar 100%.`);
+    if (totalTech !== 100) errores.push(`La distribución de Tecnología suma ${totalTech}% y debe sumar 100%.`);
+    alertaEl.innerHTML = `
+      <div class="alerta">
+        <b>⚠ Revisar distribución</b>
+        <ul>${errores.map(e => `<li>${e}</li>`).join("")}</ul>
+      </div>
+    `;
+    return;
+  } else {
+    alertaEl.innerHTML = "";
+  }
+
+  // ARPU
   const arpuTerm = calcArpu(valoresTerm, RANGOS_TERMINALES);
   const arpuTech = calcArpu(valoresTech, RANGOS_TECNOLOGIA);
   const arpuCons = (MIX_TERMINALES/100) * arpuTerm + (MIX_TECNOLOGIA/100) * arpuTech;
@@ -847,7 +839,7 @@ function actualizar() {
   const uGap            = Math.max(0, uNecesariasMeta - unidadesTotales);
   const vGap            = Math.max(0, meta - ventaProy);
 
-  // ---------- COMISIÓN ----------
+  // Comisión e incentivo
   let comTerm = 0, comTech = 0;
   let incPotTerm = 0, incPotTech = 0;
 
@@ -871,46 +863,45 @@ function actualizar() {
   const cumpleTech = ventaTech / metaTech * 100;
   const cumpleTT   = ventaProy / meta * 100;
 
-  const comTotal = cumpleTT >= 100 ? (comTerm + comTech) : 0;
+  const comTotal = comTerm + comTech;
 
   let incPagTerm = 0, incPagTech = 0;
-  if (cumpleTT >= 100 && cumpleTerm >= 80 && cumpleTech >= 80) {
-    incPagTerm = incPotTerm; incPagTech = incPotTech;
-  } else if (cumpleTT < 100 && cumpleTerm >= 100) {
-    incPagTerm = incPotTerm;
-  } else if (cumpleTT < 100 && cumpleTech >= 100) {
-    incPagTech = incPotTech;
+  if (cumpleTT >= 100) {
+    if (cumpleTerm >= 80) incPagTerm = incPotTerm;
+    if (cumpleTech >= 80) incPagTech = incPotTech;
   }
   const incTotal = incPagTerm + incPagTech;
+
+  const aplicaIncTerm = cumpleTT >= 100 && cumpleTerm >= 80;
+  const aplicaIncTech = cumpleTT >= 100 && cumpleTech >= 80;
+
   const ganancias = comTotal + incTotal;
 
-  // ---------- PINTAR ----------
+  // PINTAR
   document.getElementById("arpu-consolidado").textContent = fmtMoney(arpuCons);
-
   document.getElementById("u-totales").textContent = unidadesTotales.toLocaleString("es-CO");
   document.getElementById("u-term").textContent    = fmtNum(unidadesTerm);
   document.getElementById("u-tech").textContent    = fmtNum(unidadesTech);
-
-  document.getElementById("v-proy").textContent = fmtMoney(ventaProy);
-  document.getElementById("v-mix").textContent  = fmtMoney(ventaProy);
-
-  document.getElementById("c-term").textContent = fmtNum(cumpleTerm) + "%";
-  document.getElementById("c-tech").textContent = fmtNum(cumpleTech) + "%";
-  document.getElementById("c-tt").textContent   = fmtNum(cumpleTT) + "%";
-
+  document.getElementById("v-proy").textContent    = fmtMoney(ventaProy);
+  document.getElementById("v-mix").textContent     = fmtMoney(ventaProy);
+  document.getElementById("c-term").textContent    = fmtNum(cumpleTerm) + "%";
+  document.getElementById("c-tech").textContent    = fmtNum(cumpleTech) + "%";
+  document.getElementById("c-tt").textContent      = fmtNum(cumpleTT) + "%";
   document.getElementById("u-meta").textContent     = fmtNum(uPorAgenteMeta);
   document.getElementById("u-meta-tot").textContent = uNecesariasMeta.toLocaleString("es-CO");
   document.getElementById("u-gap").textContent      = uGap.toLocaleString("es-CO");
   document.getElementById("v-gap").textContent      = fmtMoney(vGap);
 
-  // Tablas conversión
+  // Tablas conversión Terminales
   let tComTerm = 0, tIncTerm = 0, tPagoTerm = 0;
   const tbTerm = document.getElementById("tabla-term");
   tbTerm.innerHTML = "";
   valoresTerm.forEach((p, i) => {
     const u = unidadesTerm * p/100;
     const [c, inc] = comisionTerminal(RANGOS_TERMINALES[i].precio);
-    const cR = u * c, iR = u * inc, pR = cR + iR;
+    const cR = u * c;
+    const iR = aplicaIncTerm ? u * inc : 0;
+    const pR = cR + iR;
     tComTerm += cR; tIncTerm += iR; tPagoTerm += pR;
     tbTerm.insertAdjacentHTML("beforeend", `<tr>
       <td>${RANGOS_TERMINALES[i].nombre}</td>
@@ -929,13 +920,16 @@ function actualizar() {
   document.getElementById("tabla-term-inc").textContent  = fmtMoney(tIncTerm);
   document.getElementById("tabla-term-pago").textContent = fmtMoney(tPagoTerm);
 
+  // Tablas conversión Tecnología
   let tComTech = 0, tIncTech = 0, tPagoTech = 0;
   const tbTech = document.getElementById("tabla-tech");
   tbTech.innerHTML = "";
   valoresTech.forEach((p, i) => {
     const u = unidadesTech * p/100;
     const [c, inc] = comisionTecnologia(RANGOS_TECNOLOGIA[i].precio);
-    const cR = u * c, iR = u * inc, pR = cR + iR;
+    const cR = u * c;
+    const iR = aplicaIncTech ? u * inc : 0;
+    const pR = cR + iR;
     tComTech += cR; tIncTech += iR; tPagoTech += pR;
     tbTech.insertAdjacentHTML("beforeend", `<tr>
       <td>${RANGOS_TECNOLOGIA[i].nombre}</td>
@@ -968,8 +962,7 @@ function actualizar() {
   estInc.textContent = incTotal > 0 ? "INCENTIVO APLICA" : "INCENTIVO NO APLICA";
   estInc.className = "estado " + (incTotal > 0 ? "ok" : "no");
 
-  const tbCom = document.getElementById("tabla-comisional");
-  tbCom.innerHTML = `
+  document.getElementById("tabla-comisional").innerHTML = `
     <tr><td>Unidades</td><td>${fmtNum(unidadesTerm)}</td><td>${fmtNum(unidadesTech)}</td><td>${unidadesTotales.toLocaleString("es-CO")}</td></tr>
     <tr><td>Venta</td><td>${fmtMoney(ventaTerm)}</td><td>${fmtMoney(ventaTech)}</td><td>${fmtMoney(ventaProy)}</td></tr>
     <tr><td>Comisión</td><td>${fmtMoney(comTerm)}</td><td>${fmtMoney(comTech)}</td><td>${fmtMoney(comTotal)}</td></tr>
@@ -983,14 +976,14 @@ function actualizar() {
   const utilidadBruta  = ganancias - gastoAgentes;
   const utilidadAgente = utilidadBruta / agentes;
 
-  document.getElementById("eco-trm").textContent     = fmtMoney(tPagoTerm);
-  document.getElementById("eco-tec").textContent     = fmtMoney(tPagoTech);
-  document.getElementById("eco-gan").textContent     = fmtMoney(gananciaAgente);
-  document.getElementById("eco-tot").textContent     = fmtMoney(ganancias);
-  document.getElementById("eco-gasto").textContent   = fmtMoney(gastoAgentes);
-  document.getElementById("eco-gasto-ag").textContent= fmtMoney(gastoAg);
-  document.getElementById("eco-util").textContent    = fmtMoney(utilidadBruta);
-  document.getElementById("eco-util-ag").textContent = fmtMoney(utilidadAgente);
+  document.getElementById("eco-trm").textContent      = fmtMoney(tPagoTerm);
+  document.getElementById("eco-tec").textContent      = fmtMoney(tPagoTech);
+  document.getElementById("eco-gan").textContent      = fmtMoney(gananciaAgente);
+  document.getElementById("eco-tot").textContent      = fmtMoney(ganancias);
+  document.getElementById("eco-gasto").textContent    = fmtMoney(gastoAgentes);
+  document.getElementById("eco-gasto-ag").textContent = fmtMoney(gastoAg);
+  document.getElementById("eco-util").textContent     = fmtMoney(utilidadBruta);
+  document.getElementById("eco-util-ag").textContent  = fmtMoney(utilidadAgente);
 }
 
 // ============================================================
