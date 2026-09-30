@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador ARPU | Tools2Power</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --t2p-black: #101820;
+    --t2p-red: #E30613;
+    --t2p-gray: #B1B1B1;
+    --t2p-gray-light: #E6E6E6;
+    --t2p-white: #FFFFFF;
+    --t2p-bg: #F4F4F4;
+
+    --ink: #101820;
+    --ink-soft: #5a5a5a;
+    --line: #E0E0E0;
+    --surface: #FFFFFF;
+    --surface-2: #F7F7F7;
+
+    --good-bg: #E8F5E9;
+    --good-line: #A5D6A7;
+    --good-ink: #1B5E20;
+    --bad-bg: #FDECEA;
+    --bad-line: #F5C6CB;
+    --bad-ink: #B71C1C;
+
+    --font-display: 'Gelion', 'Lato', 'Arial Black', sans-serif;
+    --font-body: 'Lato', 'Helvetica', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--t2p-bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ HEADER CON MARCA ============ */
+  .t2p-header {
+    background: var(--t2p-black);
+    color: white;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .t2p-header::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--t2p-red);
+    opacity: .15;
+  }
+  .t2p-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 2;
+  }
+  .t2p-isotipo {
+    display: grid;
+    grid-template-columns: repeat(2, 14px);
+    grid-template-rows: repeat(2, 14px);
+    gap: 4px;
+  }
+  .t2p-isotipo span {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--t2p-red);
+    display: block;
+  }
+  .t2p-isotipo span:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .t2p-isotipo span:nth-child(2) { grid-column: 2; grid-row: 1; }
+  .t2p-isotipo span:nth-child(3) { grid-column: 1; grid-row: 2; }
+
+  .t2p-wordmark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: .5px;
+    font-size: 18px;
+    line-height: 1;
+  }
+  .t2p-wordmark sup { color: var(--t2p-red); font-size: 10px; }
+  .t2p-wordmark small {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .t2p-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--t2p-gray);
+    z-index: 2;
+  }
+
+  /* ============ CONTENEDOR ============ */
+  .arpu-container {
+    font-family: var(--font-body);
+    max-width: 1150px;
+    margin: 25px auto;
+    color: var(--ink);
+    background: var(--t2p-bg);
+    padding: 20px;
+    position: relative;
+  }
+  .arpu-container::before {
+    content: "";
+    position: absolute;
+    top: 0; right: -20px;
+    width: 220px; height: 220px;
+    border: 1px solid var(--t2p-red);
+    border-radius: 50%;
+    opacity: .25;
+    pointer-events: none;
+  }
+
+  .arpu-title {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--ink);
+  }
+  .arpu-title span { color: var(--t2p-red); }
+
+  .subtitle {
+    color: var(--ink-soft);
+    margin-bottom: 25px;
+    font-size: 14.5px;
+  }
+
+  /* ============ INPUTS ============ */
+  .inputs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin: 15px 0 5px;
+  }
+  .input-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .input-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .input-card input[type=range] {
+    width: 100%;
+    accent-color: var(--t2p-red);
+    margin-bottom: 8px;
+  }
+  .input-value {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--ink);
+    text-align: right;
+  }
+
+  /* ============ SECCIONES ============ */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section::after {
+    content: "";
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background-image: radial-gradient(circle, var(--t2p-gray) 2px, transparent 2.5px);
+    background-size: 14px 14px;
+    opacity: .35;
+    pointer-events: none;
+  }
+
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--ink);
+    margin: 0 0 18px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h2::before {
+    content: "";
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 3px solid var(--t2p-red);
+  }
+
+  /* ============ CARDS ============ */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .card {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--t2p-red);
+  }
+  .card-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .card-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .card p { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); }
+
+  .card.hero {
+    background: var(--t2p-black);
+    border-color: var(--t2p-black);
+  }
+  .card.hero .card-title { color: #cfd4d8; }
+  .card.hero .card-value { color: var(--t2p-red); }
+  .card.hero::before { background: var(--t2p-red); }
+
+  /* ============ ARPU DESTACADO ============ */
+  .main-arpu {
+    font-family: var(--font-display);
+    font-size: 46px;
+    font-weight: 900;
+    color: var(--t2p-red);
+    letter-spacing: -.5px;
+  }
+
+  .mix {
+    font-size: 14px;
+    margin-top: 10px;
+    color: var(--ink-soft);
+  }
+  .mix strong { color: var(--ink); }
+
+  /* ============ TABLAS ============ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  th {
+    text-align: right;
+    background: var(--t2p-black);
+    color: white;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 700;
+  }
+  th:first-child, td:first-child {
+    text-align: left;
+    color: var(--ink-soft);
+  }
+  tfoot td {
+    font-weight: 700;
+    background: var(--surface-2);
+    border-top: 2px solid var(--t2p-red);
+  }
+  tbody tr:hover { background: #FAFAFA; }
+
+  h3.t2p-sub {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-top: 25px;
+    color: var(--ink);
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--t2p-red);
+    display: inline-block;
+  }
+
+  /* ============ ESTADOS ============ */
+  .estado {
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: var(--surface-2);
+    border-left: 4px solid var(--t2p-red);
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .3px;
+  }
+  .estado.ok { border-left-color: #2E7D32; color: #1B5E20; background: #E8F5E9; }
+  .estado.no { border-left-color: var(--t2p-red); color: #B71C1C; background: #FDECEA; }
+
+  /* ============ RESULTADO ECONÓMICO ============ */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+  .eco-card {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  .eco-card small {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .eco-card b {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--ink);
+    font-weight: 900;
+  }
+  .eco-card.highlight {
+    background: var(--t2p-black);
+    border-color: var(--t2p-black);
+  }
+  .eco-card.highlight small { color: #cfd4d8; }
+  .eco-card.highlight b { color: var(--t2p-red); }
+
+  /* ============ FOOTER ============ */
+  .t2p-footer {
+    text-align: center;
+    padding: 30px 20px 40px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .t2p-footer::before {
+    content: "OO TOOLS² O POWER";
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 900;
+    color: var(--t2p-black);
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .t2p-footer::after {
+    content: "www.tools2power.com";
+    display: block;
+    color: var(--t2p-red);
+    font-size: 11px;
+    margin-top: 6px;
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 780px) {
+    .inputs, .cards, .eco-grid { grid-template-columns: 1fr; }
+    .arpu-title { font-size: 22px; }
+    .main-arpu { font-size: 34px; }
+    .t2p-header { padding: 18px 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER DE MARCA -->
+<header class="t2p-header">
+  <div class="t2p-logo">
+    <div class="t2p-isotipo"><span></span><span></span><span></span></div>
+    <div class="t2p-wordmark">
+      TOOLS<sup>2</sup>
+      <small>POWER</small>
+    </div>
+  </div>
+  <div class="t2p-tag">Simulador de ARPU</div>
+</header>
+
+<div class="arpu-container">
+
+  <div class="arpu-title">Simulador <span>ARPU</span></div>
+  <div class="subtitle">Terminales + Tecnología</div>
+
+  <!-- ENTRADAS -->
+  <div class="section">
+    <h2>Supuestos de operación</h2>
+    <div class="inputs">
+      <div class="input-card">
+        <div class="input-title">Agentes</div>
+        <input type="range" id="agentes" min="1" max="50" step="1" value="15">
+        <div class="input-value" id="agentes-val">15</div>
+      </div>
+      <div class="input-card">
+        <div class="input-title">Unidades por agente</div>
+        <input type="range" id="unidades" min="1" max="100" step="1" value="56">
+        <div class="input-value" id="unidades-val">56</div>
+      </div>
+    </div>
+    <div class="mix">
+      Mix de negocio: <strong>Terminales 70%</strong> &nbsp;|&nbsp; <strong>Tecnología 30%</strong>
+    </div>
+  </div>
+
+  <!-- ARPU -->
+  <div class="section">
+    <h2>ARPU consolidado</h2>
+    <div class="main-arpu" id="arpu-consolidado">$0</div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="section">
+    <h2>Resultado de la operación</h2>
+
+    <div class="cards">
+      <div class="card"><div class="card-title">Unidades totales</div><div class="card-value" id="u-totales">0</div></div>
+      <div class="card"><div class="card-title">Terminales</div><div class="card-value" id="u-term">0</div></div>
+      <div class="card"><div class="card-title">Tecnología</div><div class="card-value" id="u-tech">0</div></div>
+    </div>
+
+    <div class="cards">
+      <div class="card hero"><div class="card-title">Venta proyectada</div><div class="card-value" id="v-proy">$0</div></div>
+      <div class="card"><div class="card-title">Venta Terminales</div><div class="card-value" id="v-term">$0</div></div>
+      <div class="card"><div class="card-title">Venta Tecnología</div><div class="card-value" id="v-tech">$0</div></div>
+    </div>
+  </div>
+
+  <!-- CUMPLIMIENTO -->
+  <div class="section">
+    <h2>Cumplimiento de metas</h2>
+    <div class="cards">
+      <div class="card"><div class="card-title">Meta Terminales</div><div class="card-value" id="c-term">0%</div></div>
+      <div class="card"><div class="card-title">Meta Tecnología</div><div class="card-value" id="c-tech">0%</div></div>
+      <div class="card"><div class="card-title">Meta T&T consolidada</div><div class="card-value" id="c-tt">0%</div></div>
+    </div>
+  </div>
+
+  <!-- OBJETIVOS -->
+  <div class="section">
+    <h2>Cumplimiento de objetivos</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Objetivo $800 M</div>
+        <div class="card-value" id="c-800">0%</div>
+        <p>Venta: <b id="venta-800">$0</b></p>
+      </div>
+      <div class="card">
+        <div class="card-title">Objetivo $1.000 M</div>
+        <div class="card-value" id="c-1000">0%</div>
+        <p>Venta: <b id="venta-1000">$0</b></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULACIÓN INVERSA -->
+  <div class="section">
+    <h2>Unidades necesarias por agente</h2>
+    <div class="cards">
+      <div class="card"><div class="card-title">Para alcanzar $800 M</div><div class="card-value" id="u-800">0</div><p>unidades por agente</p></div>
+      <div class="card"><div class="card-title">Para alcanzar $1.000 M</div><div class="card-value" id="u-1000">0</div><p>unidades por agente</p></div>
+      <div class="card"><div class="card-title">Mix Terminales</div><div class="card-value" id="mix-t">70%</div><p>del total</p></div>
+    </div>
+  </div>
+
+  <!-- CONVERSIÓN -->
+  <div class="section">
+    <h2>Conversión de porcentajes a unidades</h2>
+    <p class="mix">Detalle de cuántas unidades representa cada porcentaje del mix en cada rango de precio.</p>
+
+    <h3 class="t2p-sub">Terminales</h3>
+    <table>
+      <thead>
+        <tr><th>Rango</th><th>% Mix</th><th>Unidades</th><th>Precio</th><th>Aporte ARPU</th></tr>
+      </thead>
+      <tbody id="tabla-term"></tbody>
+      <tfoot>
+        <tr>
+          <td>Total</td><td>100%</td>
+          <td id="tabla-term-u">0</td><td>—</td>
+          <td id="tabla-term-arpu">$0</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <h3 class="t2p-sub">Tecnología</h3>
+    <table>
+      <thead>
+        <tr><th>Rango</th><th>% Mix</th><th>Unidades</th><th>Precio</th><th>Aporte ARPU</th></tr>
+      </thead>
+      <tbody id="tabla-tech"></tbody>
+      <tfoot>
+        <tr>
+          <td>Total</td><td>100%</td>
+          <td id="tabla-tech-u">0</td><td>—</td>
+          <td id="tabla-tech-arpu">$0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ESQUEMA COMISIONAL -->
+  <div class="section">
+    <h2>Esquema comisional</h2>
+    <p class="mix">Resultado económico de las ventas proyectadas y aplicación de las reglas de cumplimiento.</p>
+
+    <div class="cards" style="grid-template-columns:repeat(4,1fr);">
+      <div class="card"><div class="card-title">Venta proyectada</div><div class="card-value" id="e-venta">$0</div></div>
+      <div class="card"><div class="card-title">Comisión</div><div class="card-value" id="e-comision">$0</div></div>
+      <div class="card"><div class="card-title">Incentivo</div><div class="card-value" id="e-incentivo">$0</div></div>
+      <div class="card hero"><div class="card-title">Pago total</div><div class="card-value" id="e-total">$0</div></div>
+    </div>
+
+    <div class="estado no" id="estado-incentivo">INCENTIVO NO APLICA</div>
+    <div class="estado no" id="estado-comision">COMISIÓN NO APLICA</div>
+
+    <h3 class="t2p-sub">Detalle de comisión e incentivo</h3>
+    <table>
+      <thead>
+        <tr><th>Concepto</th><th>Terminales</th><th>Tecnología</th><th>Total</th></tr>
+      </thead>
+      <tbody id="tabla-comisional"></tbody>
+    </table>
+
+    <div class="eco-grid">
+      <div class="eco-card"><small>Comisión</small><b id="eco-com">$0</b></div>
+      <div class="eco-card"><small>Incentivo</small><b id="eco-inc">$0</b></div>
+      <div class="eco-card"><small>Pago por bonificación</small><b id="eco-bono">$0</b></div>
+      <div class="eco-card"><small>Venta proyectada</small><b id="eco-venta">$0</b></div>
+      <div class="eco-card highlight"><small>Resultado después de bonificación</small><b id="eco-result">$0</b></div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="t2p-footer"></footer>
+
+<script>
+// ============================================================
+// PARÁMETROS
+// ============================================================
+const OBJETIVO_1 = 800_000_000;
+const OBJETIVO_2 = 1_000_000_000;
+const MIX_TERMINALES = 70;
+const MIX_TECNOLOGIA = 30;
+
+const RANGOS_TERMINALES = [
+  { nombre: "De 0 a $500 mil",        precio: 500_000 },
+  { nombre: "De $500 mil a $800 mil", precio: 650_000 },
+  { nombre: "De $800 mil a $1,2 M",   precio: 1_000_000 },
+  { nombre: "De $1,2 M a $1,7 M",     precio: 1_450_000 },
+  { nombre: "De $1,7 M a $2,5 M",     precio: 2_100_000 },
+  { nombre: "De $2,5 M a $4 M",       precio: 3_250_000 },
+  { nombre: "Más de $4,0 M",          precio: 4_000_000 },
+];
+const VALORES_TERMINALES = [10, 17, 30, 21, 12, 7, 3];
+
+const RANGOS_TECNOLOGIA = [
+  { nombre: "De 0 a $500 mil",        precio: 500_000 },
+  { nombre: "De $500 mil a $800 mil", precio: 650_000 },
+  { nombre: "De $800 mil a $1,2 M",   precio: 1_000_000 },
+  { nombre: "De $1,2 M a $2 M",       precio: 1_600_000 },
+  { nombre: "De $2 M a $2,5 M",       precio: 2_250_000 },
+  { nombre: "De $2,5 M a $3,5 M",     precio: 3_000_000 },
+  { nombre: "Más de $3,5 M",          precio: 3_500_000 },
+];
+const VALORES_TECNOLOGIA = [1, 2, 3, 6, 80, 5, 3];
+
+// ============================================================
+// HELPERS
+// ============================================================
+const fmtMoney = v => "$" + Math.round(v).toLocaleString("es-CO");
+const fmtNum   = (v, d=1) => v.toLocaleString("es-CO", {minimumFractionDigits:d, maximumFractionDigits:d});
+
+function calcArpu(valores, rangos) {
+  return valores.reduce((acc, p, i) => acc + (p/100) * rangos[i].precio, 0);
+}
+function comisionTerminal(precio) {
+  if (precio <   800_000) return [0, 0];
+  if (precio < 1_200_000) return [95_000, 15_000];
+  if (precio < 1_700_000) return [100_000, 15_000];
+  if (precio < 2_500_000) return [130_000, 25_000];
+  if (precio < 4_000_000) return [135_000, 25_000];
+  return [145_000, 25_000];
+}
+function comisionTecnologia(precio) {
+  if (precio <   800_000) return [0, 0];
+  if (precio < 1_200_000) return [55_000, 0];
+  if (precio < 2_000_000) return [85_000, 20_000];
+  if (precio < 2_500_000) return [85_000, 25_000];
+  if (precio < 3_500_000) return [85_000, 30_000];
+  return [85_000, 35_000];
+}
+
+// ============================================================
+// RENDER PRINCIPAL
+// ============================================================
+function actualizar() {
+  const agentes   = +document.getElementById("agentes").value;
+  const unidadesA = +document.getElementById("unidades").value;
+  document.getElementById("agentes-val").textContent = agentes;
+  document.getElementById("unidades-val").textContent = unidadesA;
+
+  const arpuTerm = calcArpu(VALORES_TERMINALES, RANGOS_TERMINALES);
+  const arpuTech = calcArpu(VALORES_TECNOLOGIA, RANGOS_TECNOLOGIA);
+  const arpuCons = (MIX_TERMINALES/100) * arpuTerm + (MIX_TECNOLOGIA/100) * arpuTech;
+
+  const unidadesTotales = agentes * unidadesA;
+  const unidadesTerm    = unidadesTotales * MIX_TERMINALES/100;
+  const unidadesTech    = unidadesTotales * MIX_TECNOLOGIA/100;
+
+  const ventaProy = unidadesTotales * arpuCons;
+  const ventaTerm = unidadesTerm * arpuTerm;
+  const ventaTech = unidadesTech * arpuTech;
+
+  const cumple1 = ventaProy / OBJETIVO_1 * 100;
+  const cumple2 = ventaProy / OBJETIVO_2 * 100;
+
+  const uNecesarias800  = Math.ceil(OBJETIVO_1 / arpuCons);
+  const uNecesarias1000 = Math.ceil(OBJETIVO_2 / arpuCons);
+
+  // ---------- COMISIÓN ----------
+  let comTerm = 0, comTech = 0;
+  let incPotTerm = 0, incPotTech = 0;
+
+  VALORES_TERMINALES.forEach((p, i) => {
+    const u = unidadesTerm * p/100;
+    const [c, inc] = comisionTerminal(RANGOS_TERMINALES[i].precio);
+    comTerm += u * c;
+    incPotTerm += u * inc;
+  });
+  VALORES_TECNOLOGIA.forEach((p, i) => {
+    const u = unidadesTech * p/100;
+    const [c, inc] = comisionTecnologia(RANGOS_TECNOLOGIA[i].precio);
+    comTech += u * c;
+    incPotTech += u * inc;
+  });
+
+  const metaGeneral = OBJETIVO_1;
+  const metaTerm    = metaGeneral * MIX_TERMINALES/100;
+  const metaTech    = metaGeneral * MIX_TECNOLOGIA/100;
+
+  const cumpleTerm = ventaTerm / metaTerm * 100;
+  const cumpleTech = ventaTech / metaTech * 100;
+  const cumpleTT   = ventaProy / metaGeneral * 100;
+
+  const comTotal = cumpleTT >= 100 ? (comTerm + comTech) : 0;
+
+  let incPagTerm = 0, incPagTech = 0;
+  if (cumpleTT >= 100 && cumpleTerm >= 80 && cumpleTech >= 80) {
+    incPagTerm = incPotTerm; incPagTech = incPotTech;
+  } else if (cumpleTT < 100 && cumpleTerm >= 100) {
+    incPagTerm = incPotTerm;
+  } else if (cumpleTT < 100 && cumpleTech >= 100) {
+    incPagTech = incPotTech;
+  }
+  const incTotal = incPagTerm + incPagTech;
+  const bonos    = comTotal + incTotal;
+  const resultado = ventaProy + bonos;
+
+  // ---------- PINTAR ----------
+  document.getElementById("arpu-consolidado").textContent = fmtMoney(arpuCons);
+
+  document.getElementById("u-totales").textContent = unidadesTotales.toLocaleString("es-CO");
+  document.getElementById("u-term").textContent    = fmtNum(unidadesTerm);
+  document.getElementById("u-tech").textContent    = fmtNum(unidadesTech);
+
+  document.getElementById("v-proy").textContent = fmtMoney(ventaProy);
+  document.getElementById("v-term").textContent = fmtMoney(ventaTerm);
+  document.getElementById("v-tech").textContent = fmtMoney(ventaTech);
+
+  document.getElementById("c-term").textContent = fmtNum(cumpleTerm) + "%";
+  document.getElementById("c-tech").textContent = fmtNum(cumpleTech) + "%";
+  document.getElementById("c-tt").textContent   = fmtNum(cumpleTT) + "%";
+
+  document.getElementById("c-800").textContent    = fmtNum(cumple1) + "%";
+  document.getElementById("c-1000").textContent   = fmtNum(cumple2) + "%";
+  document.getElementById("venta-800").textContent  = fmtMoney(ventaProy);
+  document.getElementById("venta-1000").textContent = fmtMoney(ventaProy);
+
+  document.getElementById("u-800").textContent  = fmtNum(uNecesarias800 / agentes);
+  document.getElementById("u-1000").textContent = fmtNum(uNecesarias1000 / agentes);
+  document.getElementById("mix-t").textContent  = MIX_TERMINALES + "%";
+
+  // Tablas conversión
+  const tbTerm = document.getElementById("tabla-term");
+  tbTerm.innerHTML = "";
+  VALORES_TERMINALES.forEach((p, i) => {
+    const u = unidadesTerm * p/100;
+    const ap = (p/100) * RANGOS_TERMINALES[i].precio;
+    tbTerm.insertAdjacentHTML("beforeend", `<tr>
+      <td>${RANGOS_TERMINALES[i].nombre}</td>
+      <td>${p}%</td>
+      <td>${fmtNum(u)}</td>
+      <td>${fmtMoney(RANGOS_TERMINALES[i].precio)}</td>
+      <td>${fmtMoney(ap)}</td>
+    </tr>`);
+  });
+  document.getElementById("tabla-term-u").textContent    = fmtNum(unidadesTerm);
+  document.getElementById("tabla-term-arpu").textContent = fmtMoney(arpuTerm);
+
+  const tbTech = document.getElementById("tabla-tech");
+  tbTech.innerHTML = "";
+  VALORES_TECNOLOGIA.forEach((p, i) => {
+    const u = unidadesTech * p/100;
+    const ap = (p/100) * RANGOS_TECNOLOGIA[i].precio;
+    tbTech.insertAdjacentHTML("beforeend", `<tr>
+      <td>${RANGOS_TECNOLOGIA[i].nombre}</td>
+      <td>${p}%</td>
+      <td>${fmtNum(u)}</td>
+      <td>${fmtMoney(RANGOS_TECNOLOGIA[i].precio)}</td>
+      <td>${fmtMoney(ap)}</td>
+    </tr>`);
+  });
+  document.getElementById("tabla-tech-u").textContent    = fmtNum(unidadesTech);
+  document.getElementById("tabla-tech-arpu").textContent = fmtMoney(arpuTech);
+
+    // ---------- ESQUEMA COMISIONAL ----------
+  document.getElementById("e-venta").textContent    = fmtMoney(ventaProy);
+  document.getElementById("e-comision").textContent = fmtMoney(comTotal);
+  document.getElementById("e-incentivo").textContent= fmtMoney(incTotal);
+  document.getElementById("e-total").textContent    = fmtMoney(resultado);
+
+  const estInc = document.getElementById("estado-incentivo");
+  estInc.textContent = incTotal > 0 ? "INCENTIVO APLICA" : "INCENTIVO NO APLICA";
+  estInc.className = "estado " + (incTotal > 0 ? "ok" : "no");
+
+  const estCom = document.getElementById("estado-comision");
+  estCom.textContent = comTotal > 0 ? "COMISIÓN APLICA" : "COMISIÓN NO APLICA";
+  estCom.className = "estado " + (comTotal > 0 ? "ok" : "no");
+
+  // Tabla detalle comisional
+  const tbCom = document.getElementById("tabla-comisional");
+  tbCom.innerHTML = `
+    <tr>
+      <td>Unidades</td>
+      <td>${fmtNum(unidadesTerm)}</td>
+      <td>${fmtNum(unidadesTech)}</td>
+      <td>${unidadesTotales.toLocaleString("es-CO")}</td>
+    </tr>
+    <tr>
+      <td>Venta</td>
+      <td>${fmtMoney(ventaTerm)}</td>
+      <td>${fmtMoney(ventaTech)}</td>
+      <td>${fmtMoney(ventaProy)}</td>
+    </tr>
+    <tr>
+      <td>Comisión</td>
+      <td>${fmtMoney(comTerm)}</td>
+      <td>${fmtMoney(comTech)}</td>
+      <td>${fmtMoney(comTotal)}</td>
+    </tr>
+    <tr>
+      <td>Incentivo pagado</td>
+      <td>${fmtMoney(incPagTerm)}</td>
+      <td>${fmtMoney(incPagTech)}</td>
+      <td>${fmtMoney(incTotal)}</td>
+    </tr>
+    <tr>
+      <td>Pago total</td>
+      <td>${fmtMoney(comTerm + incPagTerm)}</td>
+      <td>${fmtMoney(comTech + incPagTech)}</td>
+      <td>${fmtMoney(resultado)}</td>
+    </tr>
+  `;
+
+  // Resultado económico
+  document.getElementById("eco-com").textContent   = fmtMoney(comTotal);
+  document.getElementById("eco-inc").textContent   = fmtMoney(incTotal);
+  document.getElementById("eco-bono").textContent  = fmtMoney(bonos);
+  document.getElementById("eco-venta").textContent = fmtMoney(ventaProy);
+  document.getElementById("eco-result").textContent= fmtMoney(resultado);
+}
+
+// ============================================================
+// EVENTOS
+// ============================================================
+document.getElementById("agentes").addEventListener("input", actualizar);
+document.getElementById("unidades").addEventListener("input", actualizar);
+
+// Render inicial
+actualizar();
+</script>
+</body>
+</html>
